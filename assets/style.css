@@ -1,6 +1,15 @@
+
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
+  background-color: deeppink;
+  margin-bottom: 25px;
+
+}
+
+header{
+  background-color: #ffabe0;
+
 }
 
 textarea {
@@ -10,6 +19,8 @@ textarea {
   color: #000000;
   border-left: 1px solid black;
   padding: 10px;
+  text-align: center;
+  font-size:x-large
 }
 
 .description {
@@ -25,9 +36,9 @@ textarea {
 }
 
 .hour {
-  background-color: #ffffff;
+  background-color: #ffabe0;
   color: #000000;
-  border-top: 1px dashed #000000;
+  border-radius: 8px;
 }
 
 .past {
@@ -49,7 +60,7 @@ textarea {
   border-left: 1px solid black;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
-  background-color: #06aed5;
+  background-color: #ffabe0;
   color: white;
 }
 
@@ -57,3 +68,11 @@ textarea {
   font-size: 20px;
   transition: all 0.3s ease-in-out;
 }
+
+div#dateTime {
+  border-style: solid;
+  margin: auto;
+  border-radius: 8px;
+  background-color: deeppink;
+}
+
