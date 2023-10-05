@@ -4,10 +4,28 @@
 
 // $ = triggers jquery Link`
 $(function () {
-  // var currentHour = new Date().getHours();
+  function updateCurrentDate() {
+    //current date
+    var currentDate = new Date();
+    // select the element by id
+    var dateElement = document.getElementById("dateTime");
+    // date outline
+    var dateOptions = { year: "numeric", month: "numeric", day: "numeric" };
 
-  // var timeBlocks = document.querySelectorAll(".time-block");
-  // var saveButton = document.querySelectorAll('.saveBtn');
+    dateElement.textContent = currentDate.toLocaleDateString(undefined,dateOptions);
+  }
+
+  updateCurrentDate();
+  // keeps refreshing date to match with day.js library
+  setInterval(function () {
+    updateCurrentDate();
+    updateCurrentDate();
+  }, 20000);
+
+  var currentHour = new Date().getHours();
+
+  const timeBlocks = document.querySelectorAll(".time-block");
+  const saveButton = document.querySelectorAll(".saveBtn");
 
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
@@ -19,43 +37,59 @@ $(function () {
   // for (let i = 0; i < saveButton.length; i++) {
   // saveButton[i].addEventListener("click", function (){
 
+  // Call the function to set values when the page loads
+  setValuesFromLocalStorage();
+
   $(".saveBtn").on("click", function () {
     var userText = $(this).siblings(".description").val();
     var timeBlock = $(this).parent().attr("id");
     localStorage.setItem(timeBlock, userText);
-    window.alert("Event Saved");
+    alert("Event Saved");
   });
 
+  function setValuesFromLocalStorage() {
+    $(".time-block").each(function () {
+      var timeBlockId = $(this).attr("id");
+      var storedValue = localStorage.getItem(timeBlockId);
+
+      if (storedValue !== null) {
+        // Set the stored value in the corresponding textarea
+        $(this).find(".description").val(storedValue);
+      }
+    });
+  }
+
+  
+  
   // TODO: Add code to apply the past, present, or future class to each time
   // block by comparing the id to the current hour. HINTS: How can the id
   // attribute of each time-block be used to conditionally add or remove the
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
-  function timeUpdate() {
+  function updateTimeBlocks() {
     var currentHour = moment().hour();
+
     console.log(currentHour);
 
-    //for (let i = 0; i < timeBlocks.length; i++) {
-    // const timeBlock = timeBlocks[i];
-
+    
     $(".time-block").each(function () {
-      const hour = parseInt($(this).attr("id").split("-")[1]);
+      const blockHour = parseInt($(this).attr("id").split("-")[1]);
 
-      if (hour < currentHour) {
-        $(this).addClass("past");
-      } else if (hour === currentHour) {
-        $(this).removeClass("past");
-        $(this).addClass("present");
+      if (blockHour < currentHour) {
+        $(this).addClass("past").removeClass(`present future`);
+      } else if (blockHour === currentHour) {
+        $(this).addClass("present").removeClass("past future");
       } else {
-        $(this).removeClass("past");
-        $(this).removeClass("present");
-        $(this).addClass("future");
+        $(this).addClass("future").removeClass("past present");
       }
     });
   }
-  timeUpdate();
-  setInterval(timeUpdate, 20000);
+  // updates timeblocks with day.js Library
 
+  // runs function TO UPDATE TIME BLOCK ^^
+
+  updateTimeBlocks();
+  setInterval(updateTimeBlocks, 20000);
 
   //
   // TODO: Add code to get any user input that was saved in localStorage and set
